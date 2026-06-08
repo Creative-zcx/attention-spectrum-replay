@@ -1,0 +1,7 @@
+torch>=2.0
+numpy>=1.23
+pyyaml>=6.0
+pillow>=9.0
+tqdm>=4.64
+datasets>=2.18
+huggingface-hub>=0.20

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "attention-spectrum-replay"
+version = "0.1.0"
+description = "Attention-Spectrum Replay (ASR) continual multimodal learning toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.0",
+  "numpy>=1.23",
+  "pyyaml>=6.0",
+  "pillow>=9.0",
+  "tqdm>=4.64",
+  "datasets>=2.18",
+  "huggingface-hub>=0.20"
+]
+
+[project.optional-dependencies]
+hf = [
+  "transformers>=4.40",
+  "peft>=0.10",
+  "accelerate>=0.25",
+  "bitsandbytes>=0.43"
+]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["attention_spectrum_replay*"]

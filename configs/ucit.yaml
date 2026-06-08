@@ -1,0 +1,60 @@
+method: asr
+skills: [count, color, locate, relation, read, object, activity, attribute, existence, other]
+
+spectral:
+  radial_bins: 8
+  angular_bins: 8
+  eps: 1.0e-8
+  selected_last_layers: 4
+  frequency_mode: fftfreq
+  fft_norm: ortho
+  head_stat: variance
+  normalize_peak_power: true
+
+asr:
+  beta: 0.5
+  lambda_ang: 0.1
+  tau_mah: 1.0
+  alpha: 0.9
+  tau_skill: 0.2
+  cov_floor: 1.0e-4
+  normalize_mahalanobis_by_dim: true
+  gamma: 0.02
+
+optim:
+  lr: 2.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  epochs_per_stage: 1
+  batch_size: 16
+  max_grad_norm: 1.0
+  cosine_decay: true
+  warmup_steps: 0
+
+model:
+  kind: llava
+  hf_model_name_or_path: liuhaotian/llava-v1.5-7b
+  image_size: 336
+  num_classes: 4096
+  max_seq_len: 256
+  freeze_backbone: true
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+
+data:
+  kind: jsonl
+  manifest_dir: data/ucit_manifests
+  image_root: data/ucit_images
+  answer_vocab: data/ucit_manifests/answer_vocab.json
+  num_stages: 10
+  max_seq_len: 256
+
+runtime:
+  device: cuda
+  seed: 7
+  num_workers: 8
+  output_dir: runs/ucit_asr
+  log_every: 50
+  save_every_stage: true
+  use_amp: true

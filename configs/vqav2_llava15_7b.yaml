@@ -1,0 +1,66 @@
+method: asr
+skills: [count, color, locate, comparison, attribute, activity, existence, read, object, other]
+
+spectral:
+  radial_bins: 8
+  angular_bins: 8
+  eps: 1.0e-8
+  selected_last_layers: 4
+  frequency_mode: fftfreq
+  fft_norm: ortho
+  head_stat: variance
+  normalize_peak_power: true
+
+asr:
+  beta: 0.5
+  lambda_ang: 0.1
+  tau_mah: 1.0
+  alpha: 0.9
+  tau_skill: 0.2
+  cov_floor: 1.0e-4
+  normalize_mahalanobis_by_dim: true
+  gamma: 0.05
+
+optim:
+  lr: 2.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  epochs_per_stage: 1
+  batch_size: 16
+  max_grad_norm: 1.0
+  cosine_decay: true
+  warmup_steps: 0
+
+model:
+  kind: llava
+  hf_model_name_or_path: liuhaotian/llava-v1.5-7b
+  hidden_dim: 4096
+  num_layers: 32
+  num_heads: 32
+  image_size: 336
+  patch_size: 14
+  vocab_size: 32000
+  num_classes: 3129
+  max_seq_len: 256
+  freeze_backbone: true
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+
+data:
+  kind: jsonl
+  manifest_dir: data/vqav2_manifests
+  image_root: data/vqav2_images
+  answer_vocab: data/vqav2_manifests/answer_vocab.json
+  num_stages: 10
+  max_seq_len: 256
+  task_order: [count, color, locate, comparison, attribute, activity, existence, read, object, other]
+
+runtime:
+  device: cuda
+  seed: 7
+  num_workers: 4
+  output_dir: runs/vqav2_llava15_7b_asr
+  log_every: 50
+  save_every_stage: true
+  use_amp: true
